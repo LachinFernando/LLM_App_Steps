@@ -1,12 +1,8 @@
 import streamlit as st
 from openai import OpenAI
 from rag import QA_MODEL, generate_answer, get_similar_context
+from Utils import markdown_creator, chatbot_info
 
-
-def markdown_creator(*args) -> None:
-    for argument in args:
-        st.markdown(f"- {argument}")
-    st.subheader("ChatBot")
 
 
 st.title("Simple RAG")
@@ -14,11 +10,13 @@ st.title("Simple RAG")
 # content
 markdown_creator(
     *[
-        "In here chatbot uses RAG framework to answer the user question.",
-        "The chatbot waits until the whole answer is generated.",
-        "No Chat History.",
+        "Use of RAG framework for question answering.",
+        "hands on with Lnagchain and pinecone."
+
     ]
 )
+
+chatbot_info()
 
 # set openai key
 client = OpenAI(api_key= st.secrets["OPENAI_API_KEY"])

@@ -1,27 +1,24 @@
-import streamlit as st
 from openai import OpenAI
-from rag import QA_MODEL, streaming_question_answering, get_similar_context
+import streamlit as st
+from text_graph import graph_streamer, graph_answer_generator
+from langchain_core.messages import AIMessage, HumanMessage
 from Utils import markdown_creator, chatbot_info
 
 
-st.title("Simple RAG using Streaming")
+IMAGE_ADDRESS = "https://upload.wikimedia.org/wikipedia/commons/1/1a/Irritable_bowel_syndrome.jpg"
+
+
+st.title("Simple RAG Based Langgraph Chain")
 
 # content
 markdown_creator(
     *[
-        "Use of RAG framework for question answering.",
-        "Hands on with Lnagchain and pinecone.",
-        "Streaming the answer."
+        "Use of RAG framework along with Langgraph for question answering.",
+        "Hands on with Langgraph.",
     ]
 )
 
 chatbot_info()
-
-# set openai key
-client = OpenAI(api_key= st.secrets["OPENAI_API_KEY"])
-
-if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = QA_MODEL
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -36,6 +33,7 @@ if prompt := st.chat_input("What is up?"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        pinecone_context = get_similar_context(prompt)
-        response = st.write_stream(streaming_question_answering(prompt, pinecone_context))
+        message_list = [HumanMessage(prompt)]
+        response = graph_answer_generator(message_list)
+        st.markdown(response)
     st.session_state.messages.append({"role": "assistant", "content": response})

@@ -1,11 +1,6 @@
 import streamlit as st
 from openai import OpenAI
-
-
-def markdown_creator(*args) -> None:
-    for argument in args:
-        st.markdown(f"- {argument}")
-    st.subheader("ChatBot")
+from Utils import markdown_creator
 
 
 st.title("Simple API Call")
@@ -13,8 +8,7 @@ st.title("Simple API Call")
 # content
 markdown_creator(
     *[
-        "In here chatbot is simply asking the user question from the LLM with the chat history.",
-        "The chatbot waits until the whole answer is generated."
+        "Use of OpenAI APIs to get the LLM response.",
     ]
 )
 
